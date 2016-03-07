@@ -12,7 +12,7 @@ http://cwarrendale.com/
 The personal blog of an opinionated and artistically-inclined technologist
 </description>
 <lastBuildDate>
-Sun, 06 Mar 2016 11:42:37 -0600
+Mon, 07 Mar 2016 13:00:44 -0600
 </lastBuildDate>
 <generator>
 clj-rss
@@ -28,8 +28,8 @@ http://cwarrendale.com/posts-output/2016-01-07-docs.html
 Quick Start Guide
 </title>
 <description>
-&lt;p&gt;This intro only documents a subset of Cryogen's features. For additional documentation please see the &lt;a href='http://cryogenweb.org'&gt;cryogen site&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;features&quot;&gt;&lt;/a&gt;Features&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Blog posts and pages with Markdown (default) or AsciiDoc&lt;/li&gt;&lt;li&gt;Tags&lt;/li&gt;&lt;li&gt;Table of contents generation&lt;/li&gt;&lt;li&gt;Plain HTML page templates&lt;/li&gt;&lt;li&gt;Code syntax highlighting&lt;/li&gt;&lt;li&gt;Disqus support&lt;/li&gt;&lt;li&gt;Sitemap generation&lt;/li&gt;&lt;li&gt;RSS feed generation&lt;/li&gt;&lt;li&gt;Sass/SCSS compilation&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;&lt;a name=&quot;prerequisites&quot;&gt;&lt;/a&gt;Prerequisites&lt;/h2&gt;&lt;p&gt;You will need &lt;a href='https://github.com/technomancy/leiningen'&gt;Leiningen&lt;/a&gt; 2.5.0 or above installed.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;usage&quot;&gt;&lt;/a&gt;Usage&lt;/h2&gt;&lt;h3&gt;&lt;a name=&quot;creating&amp;#95;a&amp;#95;new&amp;#95;site&quot;&gt;&lt;/a&gt;Creating a New Site&lt;/h3&gt;&lt;p&gt;A new site can be created using the Cryogen template as follows:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;lein new cryogen my-blog
-&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;running&amp;#95;the&amp;#95;server&quot;&gt;&lt;/a&gt;Running the Server&lt;/h3&gt;&lt;p&gt;The web server can be started from the &lt;code&gt;my-blog&lt;/code&gt; directory using the &lt;code&gt;lein-ring&lt;/code&gt; plugin:&lt;/p&gt;&lt;pre&gt;&lt;code&gt;lein ring server
+&lt;p&gt;This intro only documents a subset of Cryogen's features. For additional documentation please see the &lt;a href='http://cryogenweb.org'&gt;cryogen site&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;features&quot;&gt;&lt;/a&gt;Features&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;Blog posts and pages with Markdown (default) or AsciiDoc&lt;/li&gt;&lt;li&gt;Tags&lt;/li&gt;&lt;li&gt;Table of contents generation&lt;/li&gt;&lt;li&gt;Plain HTML page templates&lt;/li&gt;&lt;li&gt;Code syntax highlighting&lt;/li&gt;&lt;li&gt;Disqus support&lt;/li&gt;&lt;li&gt;Sitemap generation&lt;/li&gt;&lt;li&gt;RSS feed generation&lt;/li&gt;&lt;li&gt;Sass/SCSS compilation&lt;/li&gt;&lt;/ul&gt;&lt;h2&gt;&lt;a name=&quot;prerequisites&quot;&gt;&lt;/a&gt;Prerequisites&lt;/h2&gt;&lt;p&gt;You will need &lt;a href='https://github.com/technomancy/leiningen'&gt;Leiningen&lt;/a&gt; 2.5.0 or above installed.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;usage&quot;&gt;&lt;/a&gt;Usage&lt;/h2&gt;&lt;h3&gt;&lt;a name=&quot;creating&amp;#95;a&amp;#95;new&amp;#95;site&quot;&gt;&lt;/a&gt;Creating a New Site&lt;/h3&gt;&lt;p&gt;A new site can be created using the Cryogen template as follows:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;lein new cryogen my-blog
+&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;running&amp;#95;the&amp;#95;server&quot;&gt;&lt;/a&gt;Running the Server&lt;/h3&gt;&lt;p&gt;The web server can be started from the &lt;code&gt;my-blog&lt;/code&gt; directory using the &lt;code&gt;lein-ring&lt;/code&gt; plugin:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;lein ring server
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The server will watch for changes in the &lt;code&gt;resources/templates&lt;/code&gt; folder and recompile the content automatically.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;site&amp;#95;configuration&quot;&gt;&lt;/a&gt;Site Configuration&lt;/h3&gt;&lt;p&gt;The site configuration file is found at &lt;code&gt;templates/config.edn&lt;/code&gt;, this file looks as follows:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clojure&quot;&gt;{:site-title         &amp;quot;My Awesome Blog&amp;quot;
  :author             &amp;quot;Bob Bobbert&amp;quot;
  :description        &amp;quot;This blog is awesome&amp;quot;
@@ -56,33 +56,80 @@ Quick Start Guide
  :blocks-per-preview 2
  :previews?          false}
 
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For information about each key please see the &lt;a href='http://cryogenweb.org/docs/configuration.html'&gt;&quot;Configuration&quot;&lt;/a&gt; portion of the Cryogen documentation site.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;switching&amp;#95;between&amp;#95;markdown&amp;#95;and&amp;#95;asciidoc&quot;&gt;&lt;/a&gt;Switching between Markdown and AsciiDoc&lt;/h3&gt;&lt;p&gt;Cryogen comes with Markdown support as default. If you want to use AsciiDoc instead, open the &lt;code&gt;project.clj&lt;/code&gt; in your created blog (e.g. &lt;code&gt;my-blog&lt;/code&gt;), and change the line in &lt;code&gt;:dependencies&lt;/code&gt; that says &lt;code&gt;cryogen-markdown&lt;/code&gt; to &lt;code&gt;cryogen-asciidoc&lt;/code&gt;. Instead of looking for files ending in &lt;code&gt;.md&lt;/code&gt; in the &lt;code&gt;resources/templates/md&lt;/code&gt; directory, the compiler will now look for files ending in &lt;code&gt;.asc&lt;/code&gt; in the &lt;code&gt;resources/templates/asc&lt;/code&gt; directory.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;selecting&amp;#95;a&amp;#95;theme&quot;&gt;&lt;/a&gt;Selecting a Theme&lt;/h3&gt;&lt;p&gt;The Cryogen template comes with two themes in the &lt;code&gt;resources/templates/themes&lt;/code&gt; folder. To change your blog's theme, change the value of the &lt;code&gt;:theme&lt;/code&gt; key in &lt;code&gt;config.edn&lt;/code&gt;.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;customizing&amp;#95;layouts&quot;&gt;&lt;/a&gt;Customizing Layouts&lt;/h3&gt;&lt;p&gt;Cryogen uses &lt;a href='https://github.com/yogthos/Selmer'&gt;Selmer&lt;/a&gt; templating engine for layouts. Please refer to its documentation to see the supported tags and filters for the layouts.&lt;/p&gt;&lt;p&gt;The layouts are contained in the &lt;code&gt;resources/templates/themes/{theme}/html&lt;/code&gt; folder of the project. By default, the &lt;code&gt;base.html&lt;/code&gt; layout is used to provide the general layout for the site. This is where you would add static resources such as CSS and JavaScript assets as well as define headers and footers for your site.&lt;/p&gt;&lt;p&gt;Each page layout should have a name that matches the &lt;code&gt;:layout&lt;/code&gt; key in the page metadata and end with &lt;code&gt;.html&lt;/code&gt;. Page layouts extend the base layout and should only contain the content relaveant to the page inside the &lt;code&gt;content&lt;/code&gt; block. For example, the &lt;code&gt;tag&lt;/code&gt; layout is located in &lt;code&gt;tag.html&lt;/code&gt; and looks as follows:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;{% extends &amp;quot;templates/html/layouts/base.html&amp;quot; %}
-{% block content %}
-&amp;lt;div id=&amp;quot;posts-by-tag&amp;quot;&amp;gt;
-    &amp;lt;h2&amp;gt;Posts tagged {{name}}&amp;lt;/h2&amp;gt;
-    &amp;lt;ul&amp;gt;
-    {% for post in posts %}
-        &amp;lt;li&amp;gt;
-            &amp;lt;a href=&amp;quot;{{post.uri}}&amp;quot;&amp;gt;{{post.title}}&amp;lt;/a&amp;gt;
-        &amp;lt;/li&amp;gt;
-    {% endfor %}
-    &amp;lt;/ul&amp;gt;
-&amp;lt;/div&amp;gt;
-{% endblock %}
-&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;code&amp;#95;syntax&amp;#95;highlighting&quot;&gt;&lt;/a&gt;Code Syntax Highlighting&lt;/h3&gt;&lt;p&gt;Cryogen uses &lt;a href='https://highlightjs.org/'&gt;Highlight.js&lt;/a&gt; for code syntax highlighting. You can add more languages by replacing &lt;code&gt;templates/js/highlight.pack.js&lt;/code&gt; with a customized package from &lt;a href='https://highlightjs.org/download/'&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;The &lt;code&gt; initHighlightingOnLoad&lt;/code&gt; function is called in &lt;code&gt;{theme}/html/base.html&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&amp;lt;script&amp;gt;hljs.initHighlightingOnLoad&amp;#40;&amp;#41;;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a name=&quot;deploying&amp;#95;your&amp;#95;site&quot;&gt;&lt;/a&gt;Deploying Your Site&lt;/h2&gt;&lt;p&gt;The generated static content will be found under the &lt;code&gt;resources/public&lt;/code&gt; folder. Simply copy the content to a static folder for a server such as Nginx or Apache and your site is now ready for service.&lt;/p&gt;&lt;p&gt;A sample Nginx configuration that's placed in &lt;code&gt;/etc/nginx/sites-available/default&lt;/code&gt; can be seen below:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;javascript&quot;&gt;server {
-  listen 80 default&amp;#95;server;
-  listen &amp;#91;::&amp;#93;:80 default&amp;#95;server ipv6only=on;
-  server&amp;#95;name localhost &amp;lt;yoursite.com&amp;gt; &amp;lt;www.yoursite.com&amp;gt;;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;For information about each key please see the &lt;a href='http://cryogenweb.org/docs/configuration.html'&gt;&quot;Configuration&quot;&lt;/a&gt; portion of the Cryogen documentation site.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;switching&amp;#95;between&amp;#95;markdown&amp;#95;and&amp;#95;asciidoc&quot;&gt;&lt;/a&gt;Switching between Markdown and AsciiDoc&lt;/h3&gt;&lt;p&gt;Cryogen comes with Markdown support as default. If you want to use AsciiDoc instead, open the &lt;code&gt;project.clj&lt;/code&gt; in your created blog (e.g. &lt;code&gt;my-blog&lt;/code&gt;), and change the line in &lt;code&gt;:dependencies&lt;/code&gt; that says &lt;code&gt;cryogen-markdown&lt;/code&gt; to &lt;code&gt;cryogen-asciidoc&lt;/code&gt;. Instead of looking for files ending in &lt;code&gt;.md&lt;/code&gt; in the &lt;code&gt;resources/templates/md&lt;/code&gt; directory, the compiler will now look for files ending in &lt;code&gt;.asc&lt;/code&gt; in the &lt;code&gt;resources/templates/asc&lt;/code&gt; directory.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;selecting&amp;#95;a&amp;#95;theme&quot;&gt;&lt;/a&gt;Selecting a Theme&lt;/h3&gt;&lt;p&gt;The Cryogen template comes with two themes in the &lt;code&gt;resources/templates/themes&lt;/code&gt; folder. To change your blog's theme, change the value of the &lt;code&gt;:theme&lt;/code&gt; key in &lt;code&gt;config.edn&lt;/code&gt;.&lt;/p&gt;&lt;h3&gt;&lt;a name=&quot;customizing&amp;#95;layouts&quot;&gt;&lt;/a&gt;Customizing Layouts&lt;/h3&gt;&lt;p&gt;Cryogen uses &lt;a href='https://github.com/yogthos/Selmer'&gt;Selmer&lt;/a&gt; templating engine for layouts. Please refer to its documentation to see the supported tags and filters for the layouts.&lt;/p&gt;&lt;p&gt;The layouts are contained in the &lt;code&gt;resources/templates/themes/{theme}/html&lt;/code&gt; folder of the project. By default, the &lt;code&gt;base.html&lt;/code&gt; layout is used to provide the general layout for the site. This is where you would add static resources such as CSS and JavaScript assets as well as define headers and footers for your site.&lt;/p&gt;&lt;p&gt;Each page layout should have a name that matches the &lt;code&gt;:layout&lt;/code&gt; key in the page metadata and end with &lt;code&gt;.html&lt;/code&gt;. Page layouts extend the base layout and should only contain the content relaveant to the page inside the &lt;code&gt;content&lt;/code&gt; block. For example, the &lt;code&gt;tag&lt;/code&gt; layout is located in &lt;code&gt;tag.html&lt;/code&gt; and looks as follows:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;clj&quot;&gt;&amp;#40;defn addAnItem &amp;#91;mouseEvent URL callback&amp;#93;
+  &amp;#40;let &amp;#91;submit &amp;#40;.-target mouseEvent&amp;#41;
+        form &amp;#40;.-parentElement &amp;#40;.-parentElement submit&amp;#41;&amp;#41;
+        formData &amp;#40;ef/from form &amp;#40;ef/read-form&amp;#41;&amp;#41;&amp;#93;
+    &amp;#40;do
+      &amp;#40;.preventDefault mouseEvent&amp;#41;
+      &amp;#40;POST
+        URL
+       {:params formData
+        :format :raw
+        :handler #&amp;#40;do
+                    &amp;#40;ef/at
+                      &amp;#91;:div.add.inner-form&amp;#93;
+                      &amp;#40;ef/remove-node&amp;#41;&amp;#41;
+                    &amp;#40;if &amp;#40;not &amp;#40;nil? callback&amp;#41;&amp;#41;
+                      &amp;#40;callback&amp;#41;&amp;#41;&amp;#41;}&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;h3&gt;&lt;a name=&quot;code&amp;#95;syntax&amp;#95;highlighting&quot;&gt;&lt;/a&gt;Code Syntax Highlighting&lt;/h3&gt;&lt;p&gt;Cryogen uses &lt;a href='https://highlightjs.org/'&gt;Highlight.js&lt;/a&gt; for code syntax highlighting. You can add more languages by replacing &lt;code&gt;templates/js/highlight.pack.js&lt;/code&gt; with a customized package from &lt;a href='https://highlightjs.org/download/'&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;The &lt;code&gt; initHighlightingOnLoad&lt;/code&gt; function is called in &lt;code&gt;{theme}/html/base.html&lt;/code&gt;.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;inform7&quot;&gt;&amp;quot;The Abolition of Love&amp;quot;
+Section 1 - Relation types
+Loving relates one person to one person.
+Noticing relates various people to one person.
+Impressing relates one person to various people.
+Fancying relates various people to various people.
+Acquaintance relates people to each other.
+Marriage relates one person to another.
+Alliance relates people to each other in groups.
+The Chapel is a room. Elizabeth, Wickham and Darcy are people in the Chapel. Mr Bennett and Mrs Bennett are people in the Chapel. Georgiana is a person in the Chapel.
+The verb to love means the loving relation.
+The verb to notice means the noticing relation.
+The verb to impress means the impressing relation.
+The verb to fancy means the fancying relation.
+The verb to know means the acquaintance relation.
+The verb to be married to means the marriage relation.
+The verb to be related to means the alliance relation.
+Elizabeth loves Darcy. Elizabeth fancies Darcy. Elizabeth notices Darcy. Elizabeth impresses Darcy.
+Mr Bennett is related to Mrs Bennett and Elizabeth. Mr Bennett is married to Mrs Bennett.
+Georgiana is related to Darcy.
+&lt;/code&gt;&lt;/pre&gt;&lt;h2&gt;&lt;a name=&quot;deploying&amp;#95;your&amp;#95;site&quot;&gt;&lt;/a&gt;Deploying Your Site&lt;/h2&gt;&lt;p&gt;The generated static content will be found under the &lt;code&gt;resources/public&lt;/code&gt; folder. Simply copy the content to a static folder for a server such as Nginx or Apache and your site is now ready for service.&lt;/p&gt;&lt;p&gt;A sample Nginx configuration that's placed in &lt;code&gt;/etc/nginx/sites-available/default&lt;/code&gt; can be seen below:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;haskell&quot;&gt;putTodo :: &amp;#40;Int, String&amp;#41; -&amp;gt; IO &amp;#40;&amp;#41;
+putTodo &amp;#40;n, todo&amp;#41; = putStrLn &amp;#40;show n ++ &amp;quot;: &amp;quot; ++ todo&amp;#41;
 
-  access&amp;#95;log  /var/log/blog&amp;#95;access.log;
-  error&amp;#95;log   /var/log/blog&amp;#95;error.log;
+prompt :: &amp;#91;String&amp;#93; -&amp;gt; IO &amp;#40;&amp;#41;
+prompt todos = do
+    putStrLn &amp;quot;&amp;quot;
+    putStrLn &amp;quot;Current TODO list:&amp;quot;
+    mapM&amp;#95; putTodo &amp;#40;zip &amp;#91;0..&amp;#93; todos&amp;#41;
+    command &amp;lt;- getLine
+    interpret command todos
 
-  location / {
-    alias       /var/blog/;
-    error&amp;#95;page  404 = /404.html;
-  }
-}
+interpret :: String -&amp;gt; &amp;#91;String&amp;#93; -&amp;gt; IO &amp;#40;&amp;#41;
+interpret &amp;#40;'+':' ':todo&amp;#41; todos = prompt &amp;#40;todo:todos&amp;#41;
+interpret &amp;#40;'-':' ':num &amp;#41; todos =
+    case delete &amp;#40;read num&amp;#41; todos of
+        Nothing -&amp;gt; do
+            putStrLn &amp;quot;No TODO entry matches the given number&amp;quot;
+            prompt todos
+        Just todos' -&amp;gt; prompt todos'
+interpret  &amp;quot;q&amp;quot;           todos = return &amp;#40;&amp;#41;
+interpret  command       todos = do
+    putStrLn &amp;#40;&amp;quot;Invalid command: `&amp;quot; ++ command ++ &amp;quot;`&amp;quot;&amp;#41;
+    prompt todos
+
+delete :: Int -&amp;gt; &amp;#91;a&amp;#93; -&amp;gt; Maybe &amp;#91;a&amp;#93;
+delete 0 &amp;#40;&amp;#95;:as&amp;#41; = Just as
+delete n &amp;#40;a:as&amp;#41; = do
+    as' &amp;lt;- delete &amp;#40;n - 1&amp;#41; as
+    return &amp;#40;a:as'&amp;#41;
+delete &amp;#95;  &amp;#91;&amp;#93;    = Nothing
+
+main = do
+    putStrLn &amp;quot;Commands:&amp;quot;
+    putStrLn &amp;quot;+ &amp;lt;String&amp;gt; - Add a TODO entry&amp;quot;
+    putStrLn &amp;quot;- &amp;lt;Int&amp;gt;    - Delete the numbered entry&amp;quot;
+    putStrLn &amp;quot;q          - Quit&amp;quot;
+    prompt &amp;#91;&amp;#93;
+
 &lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Simply set &lt;code&gt;yoursite.com&lt;/code&gt; to the domain of your site in the above configuration and ensure the static content is available at &lt;code&gt;/var/blog/&lt;/code&gt;. Finally, place your custom error page in the &lt;code&gt;/var/blog/404.html&lt;/code&gt; file.&lt;/p&gt;&lt;p&gt;More information on deployment can be found &lt;a href='http://cryogenweb.org/docs/deploying-to-github-pages.html'&gt;here&lt;/a&gt;.&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;some&amp;#95;sites&amp;#95;made&amp;#95;with&amp;#95;cryogen&quot;&gt;&lt;/a&gt;Some Sites Made With Cryogen&lt;/h2&gt;&lt;ul&gt;&lt;li&gt;&lt;a href='http://carmenla.me/blog/index.html'&gt;Creator's blog&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://cryogenweb.org'&gt;Cryogen Documentation Site&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://yogthos.net/'&gt;Yogthos' blog&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://www.clojure.tn'&gt;Clojure :in Tunisia&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://dl1ely.github.io'&gt;dl1ely.github.io&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://jonase.github.io/nil-recur'&gt;nil/recur&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://tangrammer.github.io/'&gt;on the clojure move&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://blog.jethrokuan.com/'&gt;cognizance&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://www.agynamix.de'&gt;AGYNAMIX Site &amp; Blog&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://eresident.me'&gt;e-Resident Me&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='http://www.chadstovern.com'&gt;Chad Stovern's blog&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href='https://greative.jp/'&gt;Greative&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 </description>
 <enclosure>
