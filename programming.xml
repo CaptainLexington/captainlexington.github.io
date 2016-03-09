@@ -12,7 +12,7 @@ http://cwarrendale.com/
 The personal blog of an opinionated and artistically-inclined technologist
 </description>
 <lastBuildDate>
-Wed, 09 Mar 2016 08:17:46 -0600
+Wed, 09 Mar 2016 08:30:00 -0600
 </lastBuildDate>
 <generator>
 clj-rss
@@ -63,7 +63,7 @@ $ ls
   apps	        docs	   libraries	  Makefile  plugins	      scripts	      targets    VERSION
   config.guess  fonts  	   LNCONFIG.h.in  make.sh   PROFILE.template  SETUP	      templates
   configure     languages  loaders	  modules   README.md	      SETUP.template  tools
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;What! That IS the source repo after all. What went wrong???&lt;/p&gt;&lt;p&gt;Oops. When I tried editing the &lt;code&gt;lambdanative&lt;/code&gt; script, I put a space between the &lt;code&gt;=&lt;/code&gt; and the path to lambdanative. So everything died, but instead of throwing a syntax, it set &lt;code&gt;LAMBDANATIVE&lt;/code&gt; to nothing (hence the second error message) and tried to execute the directory (hence the first). I hate bash. Moving on.&lt;br /&gt;&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;creating&amp;#95;the&amp;#95;foundation&amp;#95;of&amp;#95;our&amp;#95;application&quot;&gt;&lt;/a&gt;Creating the foundation of our application&lt;/h2&gt;&lt;p&gt;Now that that's set up, get ready to make our LambdaNative development directory. The environment is designed so all your LambdaNative projects are developed in the same directory tree, with their sources in the &lt;code&gt;lambdanative/apps&lt;/code&gt; directory.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ mkdir lambdanative
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;What! That IS the source repo after all. What went wrong???&lt;/p&gt;&lt;p&gt;Oops. When I tried editing the &lt;code&gt;lambdanative&lt;/code&gt; script, I put a space between the &lt;code&gt;=&lt;/code&gt; and the path to lambdanative. So everything died, but instead of throwing a syntax error, it set &lt;code&gt;LAMBDANATIVE&lt;/code&gt; to nothing (hence the second error message) and tried to execute the directory (hence the first). I hate bash. Moving on.&lt;br /&gt;&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;creating&amp;#95;the&amp;#95;foundation&amp;#95;of&amp;#95;our&amp;#95;application&quot;&gt;&lt;/a&gt;Creating the foundation of our application&lt;/h2&gt;&lt;p&gt;Now that that's set up, get ready to make our LambdaNative development directory. The environment is designed so all your LambdaNative projects are developed in the same directory tree, with their sources in the &lt;code&gt;lambdanative/apps&lt;/code&gt; directory.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ mkdir lambdanative
 $ cd lambdanative
 $ lambdanative init
 $ lambdanative create bowlliards gui
