@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>C Warren Dale: Let&#39;s Learn Together: LambdaNative, Part 1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/img/favicon.png" /><link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/code.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+	    	<img height="40px" src="/img/cwarrendale.png">
+	    </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="/index.html">Home</a></li>
+                <li
+                ><a href="/archives.html">Archives</a></li>
+                
+                <li
+                >
+                <a href="/pages-output/about.html">About</a>
+                </li>
+                
+                <li><a href="/feed.xml">RSS</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">March 8, 2016</div>
+        
+    </div>
+    <h1>Let&#39;s Learn Together: LambdaNative, Part 1</h1>
+</div>
+<div>
+    
+    <p><div class="epigraph"> 	<blockquote> 	MARGE: But I could... give piano lessons.</p><p>	LISA: But you don't play the piano.</p><p>	MARGE: I just got to stay one lesson ahead of the kid.	 	<footer>The Simpsons, <cite>S14E12, "<a href="http://simpsons.wikia.com/wiki/I'm&#95;Spelling&#95;as&#95;Fast&#95;as&#95;I&#95;Can">I'm Spelling as Fast as I Can</a>"</cite></footer> 	</blockquote> </div></p><h2><a name="let's&#95;learn&#95;together"></a>Let's Learn Together</h2><p>I am going to kick off my new blog with a new series of posts, called <em>Let's Learn Together</em>. I suspect most "Getting Started" tutorials you see online are written more-or-less just after the author has learned how to start off themselves, but they have already learned from their beginners' mistakes and the finished posts make them look like fonts of wisdom. I am going to continue in this proud tradition, only I am going to keep in all of my mistakes, for your reading pleasure. <strong>Don't follow along with this "tutorial" as you read it, because you will certainly do unnecessary work. Read through the whole post to a get big-picture understanding of what to do - and what not to do!</strong> </p><h2><a name="motivation"></a>Motivation</h2><p>Being, as I have written, an <em>opninionated</em> technologist, I choose my technology stack according to my preferences for development characteristics. I prefer functional programming to imperative (by a wide margin), and as such I haven't done much in the way of mobile development. I did aid in porting a native Java application to Android a few years back, but the experience was not ideal and it did not serve to entice me further down the path of native mobile development. The mere prospect of working an entire project in the Android SDK or - shudder to think it - in Objective-C thrilled me, filled me with fantastic terrors never felt before. So I never pursued it.</p><p>I did work with PhoneGap on an iOS project, and in fact, as a front-end developer by day, I found the experience quite pleasant. I never returned to it, though, because I wouldn't <em>choose</em> to work in JavaScript on a personal project; I wanted a cross-platform experience a little more suited to my idiosyncratic tastes.</p><p>Enter <a href='http://lambdanative.org'>LambdaNative</a>! LambdaNative is a cross-platform (mobile AND desktop) development environment written in Scheme, the language that, when I learned it freshman year of college, was my first breatheless introduction to the world of functional programming. Sounds great! Now, what to do with it?</p><h2><a name="the&#95;project"></a>The Project</h2><p>What mobile app should we make? A lame Twitter clone? Some worthless Bejeweled-style casual game? Uber for dogs? I think...<em>no</em>.</p><p>I really like pool. In fact, I <em>love</em> pool. My brother has a pool table, and although we play together as often as we can, he doesn't always have someone else to play with. Looking for decent skill-building solo games, we discovered <a href='https://en.wikipedia.org/wiki/Bowlliards'>bowlliards</a>. Bowling scoring is famously a little bit complicated, however, and we soon looked for automated ways of keeping score. Although several high-quality bowling score-keeping apps exist, they are all too focused on bowling. Existing apps in the bowlliards space are buggy, narrowly tailored to their platforms, and unmaintained. A vacuum exists, ready for a cross-platform, open-source solution!</p><h2><a name="getting&#95;started&#95;with&#95;lambdanative"></a>Getting Started with LambdaNative</h2><p>LambdaNative has extensive documentation, but how to actually get the environment set up is not entirely clear.</p><h3><a name="first&#95;attempt."></a>First attempt.</h3><p>My first attempt at getting LambdaNative set up involved <a href='https://github.com/part-cw/lambdanative'>cloning the GitHub repo</a>. Then I was sitting in the repo, looking at its contents. What now?</p><pre><code class="bash">$ ls
+  apps	        docs	   libraries	  loaders   modules	      README.md	      targets    VERSION
+  config.guess  fonts	   LICENSE	  Makefile  plugins	      scripts	      templates
+  configure     languages  LNCONFIG.h.in  make.sh   PROFILE.template  SETUP.template  tools
+</code></pre><p>Well, this is the source repository. Probably you have to build the package if you want to use it to develop against. Let's try <code>make</code>ing the project.</p><pre><code class="bash">$ make
+  Error: &#126;/.lambdanative/config.cache: file does not exist
+</code></pre><p>Hmm. Well, the <a href='https://github.com/part-cw/lambdanative/wiki'>wiki</a> says something about "<a href='https://github.com/part-cw/lambdanative/wiki/Compilation'>Compilation</a>", that sounds promising!</p><blockquote><p>The configure command follows the format: <pre><code class="bash">&gt;./configure &lt;app&gt; &#91;android|ios|bb10|macosx|win32|linux|linux486|openbsd&#93; &#91;debug|release&#93; &#91;verbose&#93;
+</code></pre> <code>&lt;app&gt;</code> is the name of the application, and must match a directory name in the <code>./apps</code> framework subdirectory.	 </p></blockquote><p>Okay, so this page is actually about compiling projects we make <em>with</em> LambdaNative. Fair enough, that will be useful later! But from here I see another page, about "<a href='https://github.com/part-cw/lambdanative/wiki/System-wide-installation'>System-wide Installation</a>". Let's have a look!</p><h3><a name="second&#95;attempt"></a>Second Attempt</h3><br /><blockquote><p>The LambdaNative package, obtained from <a href='https://github.com/part-cw/lambdanative/releases'>LambdaNative Releases</a> should be placed in a system-wide location for third-party programs, such as /usr/local or /opt. Next, the LambdaNative initialization script, located in scripts/lambdanative needs to be placed in system path, e.g. /bin or /usr/bin. Finally, the LAMBDANATIVE= variable in this script needs to be overwritten with actual full LambdaNative path. The system is now ready for use. </p></blockquote><p>Okay, so the package is available in this release! Let's download one and see what we have.</p><p>&#42;downloads&#42;</p><pre><code class="bash">$ tar xvf lambdanative-1.0.7.tar.gz
+&#91;lots of unzipping&#93;
+$ cd lambdanative-1.0.7/
+$ ls
+  apps	        docs	   libraries	  loaders   modules	      README.md	      targets    VERSION
+  config.guess  fonts	   LICENSE  	  Makefile  plugins	      scripts	      templates
+  configure     languages  LNCONFIG.h.in  make.sh   PROFILE.template  SETUP.template  tools
+</code></pre><p>Hmm. That looks familiar. The major release isn't a build, it's just a canonical package of the source code. Again, this makes sense in retrospect! So now what? The Wiki insists that all I need to do is put the "package" in some globally-accessible directory and then I can use the scripts. Maybe they mean...the source repository? In <code>/opt</code>? Well, let's give it a shot.</p><pre><code class="bash"># cp lambdanative/scripts/lambdanative /usr/bin
+# chmod +x /usr/bin/lambdanative
+# mv lambdanative /opt
+</code></pre><p>Then we set <code>LAMBDANATIVE= /opt/lambdanative</code> like the wiki says, and...</p><pre><code class="bash">$ lambdanative init
+  lambdanative: line 5: /opt/lambdanative/: Is a directory
+  ERROR: this script has not been configured.
+</code></pre><p>Okay, that's not it.</p><h3><a name="final&#95;attempt"></a>Final Attempt</h3><p>While Googling for solutions, I discovered that <a href='https://aur.archlinux.org/packages/lambdanative/'>LambdaNative is packed up in Arch Linux's "Arch User Repository"</a>, and it's totally up-to-date. Luckily, I am an Arch Linux user! I install the package with yaourt and leave you to struggle along on your own.</p><p>Actually, now that the installation worked, let's see what LAMBDANATIVE <em>actually</em> refers to.</p><pre><code class="bash">$ head /usr/bin/lambdanative
+  #!/bin/sh
+  # LambdaNative initialization script to be placed in system path
+
+  # Override this with actual lambdanative location
+  LAMBDANATIVE=/usr/share/lambdanative
+
+  if &#91; &quot;X$LAMBDANATIVE&quot; = &quot;X&quot; &#93;; then
+    echo &quot;ERROR: this script has not been configured.&quot;
+    exit
+  fi
+</code></pre><p>It's set to <code>/usr/share/lambdanative</code>. Let's see what's that all about!</p><pre><code class="bash">$ ls /usr/share/lambdanative
+  apps	        docs	   libraries	  Makefile  plugins	      scripts	      targets    VERSION
+  config.guess  fonts  	   LNCONFIG.h.in  make.sh   PROFILE.template  SETUP	      templates
+  configure     languages  loaders	  modules   README.md	      SETUP.template  tools
+</code></pre><p>What! That IS the source repo after all. What went wrong???</p><p>Oops. When I tried editing the <code>lambdanative</code> script, I put a space between the <code>=</code> and the path to lambdanative. So everything died, but instead of throwing a syntax, it set <code>LAMBDANATIVE</code> to nothing (hence the second error message) and tried to execute the directory (hence the first). I hate bash. Moving on.<br /></p><h2><a name="creating&#95;the&#95;foundation&#95;of&#95;our&#95;application"></a>Creating the foundation of our application</h2><p>Now that that's set up, get ready to make our LambdaNative development directory. The environment is designed so all your LambdaNative projects are developed in the same directory tree, with their sources in the <code>lambdanative/apps</code> directory.</p><pre><code class="bash">$ mkdir lambdanative
+$ cd lambdanative
+$ lambdanative init
+$ lambdanative create bowlliards gui
+$ ls
+  apps	     Makefile  PROFILE
+  configure  modules   README.md
+</code></pre><p>Now, check out the template source file, <code>apps/bowlliards/main.scm</code>:</p><pre><code class="scheme">;; LambdaNative gui template
+
+&#40;define gui #f&#41;
+
+&#40;main
+;; initialization
+  &#40;lambda &#40;w h&#41;
+    &#40;make-window 320 480&#41;
+    &#40;glgui-orientation-set! GUI&#95;PORTRAIT&#41;
+    &#40;set! gui &#40;make-glgui&#41;&#41;
+
+    ;; initialize gui here
+
+  &#41;
+;; events
+  &#40;lambda &#40;t x y&#41; 
+    &#40;if &#40;= t EVENT&#95;KEYPRESS&#41; &#40;begin 
+      &#40;if &#40;= x EVENT&#95;KEYESCAPE&#41; &#40;terminate&#41;&#41;&#41;&#41;
+    &#40;glgui-event gui t x y&#41;&#41;
+;; termination
+  &#40;lambda &#40;&#41; #t&#41;
+;; suspend
+  &#40;lambda &#40;&#41; &#40;glgui-suspend&#41; &#40;terminate&#41;&#41;
+;; resume
+  &#40;lambda &#40;&#41; &#40;glgui-resume&#41;&#41;
+&#41;
+
+;; eof
+</code></pre><p>This is a simple event-loop driven program that listens for key events and quits when you hit the Escape key. You can compile it right now and try it out! Next time, we'll learn - together! - how to create GUI controls.</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags-output/lets-learn-together.html">lets-learn-together</a>
+    
+    <a href="/tags-output/functional-programming.html">functional-programming</a>
+    
+    <a href="/tags-output/lambdanative.html">lambdanative</a>
+    
+    <a href="/tags-output/programming.html">programming</a>
+    
+    <a href="/tags-output/bowlliards.html">bowlliards</a>
+    
+</div>
+
+
+    <div id="prev-next">
+        
+        
+    </div>
+
+    
+
+
+</div>
+
+            </div>
+        </div>
+
+        <!--<div class="col-md-5">
+            <div id="sidebar">
+                <h3>Links</h3>
+                <ul id="links">
+                    <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
+                    <li><a href="http://carmenla.me/blog/index.html">Carmen's Blog</a></li>
+                    
+                    <li><a href="/pages-output/another-page.html">Another Page</a></li>
+                    
+                </ul>
+                
+                <div id="recent">
+                    <h3>Recent Posts</h3>
+                    <ul>
+                        
+                        <li><a href="/posts-output/2016-03-08-getting-started-with-lambdanative.html">Let&#39;s Learn Together: LambdaNative, Part 1</a></li>
+                        
+                    </ul>
+                </div>
+                
+                
+                <div id="tags">
+                    <h3>Tags</h3>
+                    <ul>
+                        
+                        <li><a href="/tags-output/lets-learn-together.html">lets-learn-together</a></li>
+                        
+                        <li><a href="/tags-output/functional-programming.html">functional-programming</a></li>
+                        
+                        <li><a href="/tags-output/lambdanative.html">lambdanative</a></li>
+                        
+                        <li><a href="/tags-output/programming.html">programming</a></li>
+                        
+                        <li><a href="/tags-output/bowlliards.html">bowlliards</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+	</div> -->
+    </div>
+    <footer><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.   C Warren Dale
+	    <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a> and <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>

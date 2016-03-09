@@ -8,8 +8,8 @@
           type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/screen.css" rel="stylesheet" type="text/css" />
-    <link href="css/code.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="/img/favicon.png" /><link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/code.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
@@ -53,134 +53,21 @@
             <div id="content">
                 
 <div id="post">
+    
     <div class="post-header">
-    <div id="post-meta" class="row">
-        <div class="col-lg-6">January 7, 2016</div>
-        
+        <h2>Let&#39;s Learn Together: LambdaNative, Part 1</h2>
+        <div id="post-meta">
+            
+            <div class="date">March 8, 2016</div>
+        </div>
     </div>
-    <h2>Quick Start Guide</h2>
-</div>
-<div>
-    
-    <p>This intro only documents a subset of Cryogen's features. For additional documentation please see the <a href='http://cryogenweb.org'>cryogen site</a>.</p><h2><a name="features"></a>Features</h2><ul><li>Blog posts and pages with Markdown (default) or AsciiDoc</li><li>Tags</li><li>Table of contents generation</li><li>Plain HTML page templates</li><li>Code syntax highlighting</li><li>Disqus support</li><li>Sitemap generation</li><li>RSS feed generation</li><li>Sass/SCSS compilation</li></ul><h2><a name="prerequisites"></a>Prerequisites</h2><p>You will need <a href='https://github.com/technomancy/leiningen'>Leiningen</a> 2.5.0 or above installed.</p><h2><a name="usage"></a>Usage</h2><h3><a name="creating&#95;a&#95;new&#95;site"></a>Creating a New Site</h3><p>A new site can be created using the Cryogen template as follows:</p><pre><code class="bash">lein new cryogen my-blog
-</code></pre><h3><a name="running&#95;the&#95;server"></a>Running the Server</h3><p>The web server can be started from the <code>my-blog</code> directory using the <code>lein-ring</code> plugin:</p><pre><code class="bash">lein ring server
-</code></pre><p>The server will watch for changes in the <code>resources/templates</code> folder and recompile the content automatically.</p><h3><a name="site&#95;configuration"></a>Site Configuration</h3><p>The site configuration file is found at <code>templates/config.edn</code>, this file looks as follows:</p><pre><code class="clojure">{:site-title         &quot;My Awesome Blog&quot;
- :author             &quot;Bob Bobbert&quot;
- :description        &quot;This blog is awesome&quot;
- :site-url           &quot;http://blogawesome.com/&quot;
- :post-root          &quot;posts&quot;
- :page-root          &quot;pages&quot;
- :post-root-uri      &quot;posts-output&quot;
- :page-root-uri      &quot;pages-output&quot;
- :tag-root-uri       &quot;tags-output&quot;
- :blog-prefix        &quot;/blog&quot;
- :rss-name           &quot;feed.xml&quot;
- :rss-filters        &#91;&quot;cryogen&quot;&#93;
- :recent-posts       3
- :post-date-format   &quot;yyyy-MM-dd&quot;
- :sass-src           nil
- :sass-dest          nil
- :theme              &quot;blue&quot;
- :resources          &#91;&quot;img&quot;&#93;
- :keep-files         &#91;&quot;.git&quot;&#93;
- :disqus?            false
- :disqus-shortname   &quot;&quot;
- :ignored-files      &#91;#&quot;\.#.&#42;&quot; #&quot;.&#42;\.swp$&quot;&#93;
- :posts-per-page     5
- :blocks-per-preview 2
- :previews?          false}
-
-</code></pre><p>For information about each key please see the <a href='http://cryogenweb.org/docs/configuration.html'>"Configuration"</a> portion of the Cryogen documentation site.</p><h3><a name="switching&#95;between&#95;markdown&#95;and&#95;asciidoc"></a>Switching between Markdown and AsciiDoc</h3><p>Cryogen comes with Markdown support as default. If you want to use AsciiDoc instead, open the <code>project.clj</code> in your created blog (e.g. <code>my-blog</code>), and change the line in <code>:dependencies</code> that says <code>cryogen-markdown</code> to <code>cryogen-asciidoc</code>. Instead of looking for files ending in <code>.md</code> in the <code>resources/templates/md</code> directory, the compiler will now look for files ending in <code>.asc</code> in the <code>resources/templates/asc</code> directory.</p><h3><a name="selecting&#95;a&#95;theme"></a>Selecting a Theme</h3><p>The Cryogen template comes with two themes in the <code>resources/templates/themes</code> folder. To change your blog's theme, change the value of the <code>:theme</code> key in <code>config.edn</code>.</p><h3><a name="customizing&#95;layouts"></a>Customizing Layouts</h3><p>Cryogen uses <a href='https://github.com/yogthos/Selmer'>Selmer</a> templating engine for layouts. Please refer to its documentation to see the supported tags and filters for the layouts.</p><p>The layouts are contained in the <code>resources/templates/themes/{theme}/html</code> folder of the project. By default, the <code>base.html</code> layout is used to provide the general layout for the site. This is where you would add static resources such as CSS and JavaScript assets as well as define headers and footers for your site.</p><p>Each page layout should have a name that matches the <code>:layout</code> key in the page metadata and end with <code>.html</code>. Page layouts extend the base layout and should only contain the content relaveant to the page inside the <code>content</code> block. For example, the <code>tag</code> layout is located in <code>tag.html</code> and looks as follows:</p><pre><code class="clj">&#40;defn addAnItem &#91;mouseEvent URL callback&#93;
-  &#40;let &#91;submit &#40;.-target mouseEvent&#41;
-        form &#40;.-parentElement &#40;.-parentElement submit&#41;&#41;
-        formData &#40;ef/from form &#40;ef/read-form&#41;&#41;&#93;
-    &#40;do
-      &#40;.preventDefault mouseEvent&#41;
-      &#40;POST
-        URL
-       {:params formData
-        :format :raw
-        :handler #&#40;do
-                    &#40;ef/at
-                      &#91;:div.add.inner-form&#93;
-                      &#40;ef/remove-node&#41;&#41;
-                    &#40;if &#40;not &#40;nil? callback&#41;&#41;
-                      &#40;callback&#41;&#41;&#41;}&#41;&#41;&#41;&#41;
-</code></pre><h3><a name="code&#95;syntax&#95;highlighting"></a>Code Syntax Highlighting</h3><p>Cryogen uses <a href='https://highlightjs.org/'>Highlight.js</a> for code syntax highlighting. You can add more languages by replacing <code>templates/js/highlight.pack.js</code> with a customized package from <a href='https://highlightjs.org/download/'>here</a>.</p><p>The <code> initHighlightingOnLoad</code> function is called in <code>{theme}/html/base.html</code>.</p><pre><code class="inform7">&quot;The Abolition of Love&quot;
-Section 1 - Relation types
-Loving relates one person to one person.
-Noticing relates various people to one person.
-Impressing relates one person to various people.
-Fancying relates various people to various people.
-Acquaintance relates people to each other.
-Marriage relates one person to another.
-Alliance relates people to each other in groups.
-The Chapel is a room. Elizabeth, Wickham and Darcy are people in the Chapel. Mr Bennett and Mrs Bennett are people in the Chapel. Georgiana is a person in the Chapel.
-The verb to love means the loving relation.
-The verb to notice means the noticing relation.
-The verb to impress means the impressing relation.
-The verb to fancy means the fancying relation.
-The verb to know means the acquaintance relation.
-The verb to be married to means the marriage relation.
-The verb to be related to means the alliance relation.
-Elizabeth loves Darcy. Elizabeth fancies Darcy. Elizabeth notices Darcy. Elizabeth impresses Darcy.
-Mr Bennett is related to Mrs Bennett and Elizabeth. Mr Bennett is married to Mrs Bennett.
-Georgiana is related to Darcy.
-</code></pre><h2><a name="deploying&#95;your&#95;site"></a>Deploying Your Site</h2><p>The generated static content will be found under the <code>resources/public</code> folder. Simply copy the content to a static folder for a server such as Nginx or Apache and your site is now ready for service.</p><p>A sample Nginx configuration that's placed in <code>/etc/nginx/sites-available/default</code> can be seen below:</p><pre><code class="haskell">putTodo :: &#40;Int, String&#41; -&gt; IO &#40;&#41;
-putTodo &#40;n, todo&#41; = putStrLn &#40;show n ++ &quot;: &quot; ++ todo&#41;
-
-prompt :: &#91;String&#93; -&gt; IO &#40;&#41;
-prompt todos = do
-    putStrLn &quot;&quot;
-    putStrLn &quot;Current TODO list:&quot;
-    mapM&#95; putTodo &#40;zip &#91;0..&#93; todos&#41;
-    command &lt;- getLine
-    interpret command todos
-
-interpret :: String -&gt; &#91;String&#93; -&gt; IO &#40;&#41;
-interpret &#40;'+':' ':todo&#41; todos = prompt &#40;todo:todos&#41;
-interpret &#40;'-':' ':num &#41; todos =
-    case delete &#40;read num&#41; todos of
-        Nothing -&gt; do
-            putStrLn &quot;No TODO entry matches the given number&quot;
-            prompt todos
-        Just todos' -&gt; prompt todos'
-interpret  &quot;q&quot;           todos = return &#40;&#41;
-interpret  command       todos = do
-    putStrLn &#40;&quot;Invalid command: `&quot; ++ command ++ &quot;`&quot;&#41;
-    prompt todos
-
-delete :: Int -&gt; &#91;a&#93; -&gt; Maybe &#91;a&#93;
-delete 0 &#40;&#95;:as&#41; = Just as
-delete n &#40;a:as&#41; = do
-    as' &lt;- delete &#40;n - 1&#41; as
-    return &#40;a:as'&#41;
-delete &#95;  &#91;&#93;    = Nothing
-
-main = do
-    putStrLn &quot;Commands:&quot;
-    putStrLn &quot;+ &lt;String&gt; - Add a TODO entry&quot;
-    putStrLn &quot;- &lt;Int&gt;    - Delete the numbered entry&quot;
-    putStrLn &quot;q          - Quit&quot;
-    prompt &#91;&#93;
-
-</code></pre><p>Simply set <code>yoursite.com</code> to the domain of your site in the above configuration and ensure the static content is available at <code>/var/blog/</code>. Finally, place your custom error page in the <code>/var/blog/404.html</code> file.</p><p>More information on deployment can be found <a href='http://cryogenweb.org/docs/deploying-to-github-pages.html'>here</a>.</p><h2><a name="some&#95;sites&#95;made&#95;with&#95;cryogen"></a>Some Sites Made With Cryogen</h2><ul><li><a href='http://carmenla.me/blog/index.html'>Creator's blog</a></li><li><a href='http://cryogenweb.org'>Cryogen Documentation Site</a></li><li><a href='http://yogthos.net/'>Yogthos' blog</a></li><li><a href='http://www.clojure.tn'>Clojure :in Tunisia</a></li><li><a href='http://dl1ely.github.io'>dl1ely.github.io</a></li><li><a href='http://jonase.github.io/nil-recur'>nil/recur</a></li><li><a href='http://tangrammer.github.io/'>on the clojure move</a></li><li><a href='http://blog.jethrokuan.com/'>cognizance</a></li><li><a href='http://www.agynamix.de'>AGYNAMIX Site & Blog</a></li><li><a href='http://eresident.me'>e-Resident Me</a></li><li><a href='http://www.chadstovern.com'>Chad Stovern's blog</a></li><li><a href='https://greative.jp/'>Greative</a></li></ul>
-</div>
-
-<div id="post-tags">
-    <b>Tags: </b>
-    
-    <a href="/tags-output/cryogen.html">cryogen</a>
-    
-</div>
-
-
+    <p></p><div class="epigraph"><blockquote> 	MARGE: But I could... give piano lessons.<p>	LISA: But you don't play the piano.</p><p>	MARGE: I just got to stay one lesson ahead of the kid.	 	<footer>The Simpsons, <cite>S14E12, "<a href="http://simpsons.wikia.com/wiki/I&apos;m_Spelling_as_Fast_as_I_Can" shape="rect">I'm Spelling as Fast as I Can</a>"</cite></footer></p></blockquote></div><h2><a name="let&apos;s_learn_together" shape="rect"></a>Let's Learn Together</h2><p>I am going to kick off my new blog with a new series of posts, called <em>Let's Learn Together</em>. I suspect most "Getting Started" tutorials you see online are written more-or-less just after the author has learned how to start off themselves, but they have already learned from their beginners' mistakes and the finished posts make them look like fonts of wisdom. I am going to continue in this proud tradition, only I am going to keep in all of my mistakes, for your reading pleasure. <strong>Don't follow along with this "tutorial" as you read it, because you will certainly do unnecessary work. Read through the whole post to a get big-picture understanding of what to do - and what not to do!</strong></p>
+    <a href="/posts-output/2016-03-08-getting-started-with-lambdanative.html">Continue reading &#8594;</a>
+    <hr>
     
 
     <div id="prev-next">
         
-        
-        <a class="right" href="/posts-output/2014-11-04-second-post.html">Yet Another Post &raquo;</a>
         
     </div>
 </div>
@@ -203,11 +90,7 @@ main = do
                     <h3>Recent Posts</h3>
                     <ul>
                         
-                        <li><a href="/posts-output/2016-01-07-docs.html">Quick Start Guide</a></li>
-                        
-                        <li><a href="/posts-output/2014-11-04-second-post.html">Yet Another Post</a></li>
-                        
-                        <li><a href="/posts-output/2014-03-10-first-post.html">A Post</a></li>
+                        <li><a href="/posts-output/2016-03-08-getting-started-with-lambdanative.html">Let&#39;s Learn Together: LambdaNative, Part 1</a></li>
                         
                     </ul>
                 </div>
@@ -217,11 +100,15 @@ main = do
                     <h3>Tags</h3>
                     <ul>
                         
-                        <li><a href="/tags-output/cryogen.html">cryogen</a></li>
+                        <li><a href="/tags-output/lets-learn-together.html">lets-learn-together</a></li>
                         
-                        <li><a href="/tags-output/very fetch.html">very fetch</a></li>
+                        <li><a href="/tags-output/functional-programming.html">functional-programming</a></li>
                         
-                        <li><a href="/tags-output/not fetch.html">not fetch</a></li>
+                        <li><a href="/tags-output/lambdanative.html">lambdanative</a></li>
+                        
+                        <li><a href="/tags-output/programming.html">programming</a></li>
+                        
+                        <li><a href="/tags-output/bowlliards.html">bowlliards</a></li>
                         
                     </ul>
                 </div>
@@ -229,12 +116,12 @@ main = do
             </div>
 	</div> -->
     </div>
-    <footer>Copyright &copy;  C Warren Dale
-        <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a></p></footer>
+    <footer><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.   C Warren Dale
+	    <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a> and <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a></p></footer>
 </div>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="js/highlight.pack.js" type="text/javascript"></script>
+<script src="/js/highlight.pack.js" type="text/javascript"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
