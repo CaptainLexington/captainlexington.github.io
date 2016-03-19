@@ -12,31 +12,11 @@ http://cwarrendale.com/
 The personal blog of an opinionated and artistically-inclined technologist
 </description>
 <lastBuildDate>
-Sat, 19 Mar 2016 16:55:32 -0500
+Sat, 19 Mar 2016 16:57:42 -0500
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
-<item>
-<guid>
-http://cwarrendale.com/posts-output/lets-learn-together-lambdanative-part-2.html
-</guid>
-<link>
-http://cwarrendale.com/posts-output/lets-learn-together-lambdanative-part-2.html
-</link>
-<title>
-Let's Learn Together: LambdaNative Part 2
-</title>
-<description>
-&lt;p&gt;Welcome back to the Let's Learn Together! Last time we installed LambdaNative from source and generated an empty template GUI application. Today we are going to examine their GUI library. At the end of this post we want to have 10 text inputs we can type numbers into.&lt;/p&gt;
-</description>
-<enclosure>
-
-</enclosure>
-<pubDate>
-Sat, 12 Mar 2016 00:00:00 -0600
-</pubDate>
-</item>
 <item>
 <guid>
 http://cwarrendale.com/posts-output/2016-03-08-getting-started-with-lambdanative.html
