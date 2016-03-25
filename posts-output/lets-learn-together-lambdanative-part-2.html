@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>C Warren Dale: Let&#39;s Learn Together: LambdaNative Part 2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='http://fonts.googleapis.com/css?family=Alegreya:400italic,700italic,400,700' rel='stylesheet'
+          type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/img/favicon.png" />
+    <link href="/css/screen.css" rel="stylesheet" type="text/css" />
+    <link href="/css/code.css" rel="stylesheet" type="text/css" />
+    <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">
+	    	<img height="40px" src="/img/cwarrendale.png">
+	    </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li ><a href="/index.html">Home</a></li>
+                <li
+                ><a href="/archives.html">Archives</a></li>
+                
+                <li
+                >
+                <a href="/pages-output/about.html">About</a>
+                </li>
+                
+                <li><a href="/feed.xml">RSS</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div><!--/.container-fluid -->
+</nav>
+
+
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="content">
+                
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta" class="row">
+        <div class="col-lg-6">March 25, 2016</div>
+        
+    </div>
+    <h1>Let&#39;s Learn Together: LambdaNative Part 2</h1>
+</div>
+<div>
+    
+    <p>Welcome back to the Let's Learn Together! Last time we installed LambdaNative from source and generated an empty template GUI application. Today we are going to examine their GUI library. But before we get to that, let's examine what kind of basic interface it is we want.</p><p>We are going to steal our UI from extant Android application <a href='https://play.google.com/store/apps/details?id=jp.dcom.android.bowlard'>Touch de Score Bowlard</a>—specifically, the paradigm of touching each specific ball as it is sunk. However, play around with the app a bit and you'll see it has several UI issues:</p><ul><li>It's impossible to undo any mistakes in input - if you accidentally hit the "G" button (which means "gutterball"), you've scrapped that whole frame and can't change your score.</li><li>There's a separate button for "Spare" and "Strike" - the UI should just detect spares and strikes because it should know what turn you're on.</li><li>You can only keep your own score - you can't keep score for an entire game of multiple players.</li></ul><p>So, we're going to go our own way on these issues. Here's what we want out of our app:</p><ul><li>A diagram of the balls in play. You click on a ball to indicate you've sunk it, and your score is incremented. The ball gets grayed out to demonstrate that it is out of play, and if you tap it again it comes back into play - for instance, if you've made a mistake. There is additionally a button to advance to the next frame.</li><li>A picture of a scorecard at the top of the screen indicates the current player, their running total score, and their current frame.</li><li>There are arrow buttons near the scorecard that allow you to cycle back to earlier frames to alter those scores.</li><li>It is possible to go to a separate screen to view the entire scorecard for the every player so far, like a traditional bowling alley scorecard.</li><li>There is a label of text beneath the scorecard that instructs the player on their next move, according to the mildly complicated rules of the game.</li></ul><p>I think that's everything we need to worry about for now. For this first example, we'll want our ten "ball" buttons on the screen.</p><p>Well, let's get started!</p><h2><a name="let's&#95;learn&#95;together:&#95;lambdanative's&#95;gui&#95;system"></a>Let's Learn Together: LambdaNative's GUI system</h2><p>All LambdaNative GUI applications need to make use of the module <a href='https://github.com/part-cw/lambdanative/wiki/Index-of-Module-ln&#95;glgui'>ln&#95;glgui</a>, documented in the wiki.</p><p>It looks like we want a <a href='https://github.com/part-cw/lambdanative/wiki/glgui-button'><code>glgui-button</code></a>. It puts an image texture at an x,y location on the screen and attaches a callback. First, we'll need image textures! I made up a simple suite of pool ball graphics, to be released under <a href='http://creativecommons.org/licenses/by-sa/4.0/'>CC-by-sa 4.0</a>, like the text of this blog.</p><p><figure> <label for="pool-balls" class="margin-toggle"></label> <input type="checkbox" id="pool-balls" class="margin-toggle"> <span class="marginnote">The SVG-based pool ball graphics we will use. CC-by-sa 2016 C Warren Dale</span> <img src="/img/balls.png"> </figure></p><p>I've made a complete pool set so people can use it for their own purposes, even though we'll only use balls one-through ten. I've also chopped them into separate files called <code>ballK.png</code> and <code>ballK-gray.png</code>, for 1 ≤ K ≤ 15. </p><p>So, the first thing we want to do is load all our images. LambaNative has a wrapper around libpng, <a href='https://github.com/part-cw/lambdanative/wiki/Index-of-Module-png'>png</a>, which looks promising; specifically the <code>png-&gt;img</code> function, which loads png images by filename and returns an image texture like our <code>glgui-button</code> is expecting.</p><p>So we'll want to take a list of the numbers one through ten, map it to a list of image textures, and and pass those to a function that creates buttons, along with a list of x,y coords. So the first thing we need is range.</p><pre><code class="scheme">1&gt; range
+&#42;&#42;&#42; ERROR IN &#40;console&#41;@9.1 -- Unbound variable: range
+</code></pre><p>Huh. Well, Google indicates Scheme thinks it makes sense to call the function we all know as range <code>iota</code>. Okay. </p><pre><code class="scheme">2&gt; iota
+&#42;&#42;&#42; ERROR IN &#40;console&#41;@10.1 -- Unbound variable: iota
+</code></pre><p>Okay. So Gambit-C doesn't have an implementation of iota. We're going to do a terrible thing and hardcode the identifiers for the balls, justifying this by loading in the cue ball as well! </p><p>At the top of <code>main.scm</code>:</p><pre><code class="scheme"> ;; An app for keeping score in a game of bowlliards
+ &#40;define gui #f&#41;
+ &#40;define balls
+   '&#40;&quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot;
+     &quot;6&quot; &quot;7&quot; &quot;8&quot; &quot;9&quot; &quot;10&quot; 
+     &quot;cue&quot;&#41;&#41;
+</code></pre><p>And in the <code>initialization</code> function:<pre><code class="scheme">;; initialization
+  &#40;lambda &#40;w h&#41;
+            ;; We map the balls list to a list of image pairs corresponding to default and grayed-out balls
+    &#40;let &#40;&#91;ball-images &#40;map
+			&#40;lambda &#40;ball&#41;
+			  `&#40;&#40;png-&gt;img &#40;string-append &quot;resources/ball&quot; ball &quot;.png&quot;&#41;&#41;
+			    &#40;png-&gt;img &#40;string-append &quot;resources/ball&quot; ball &quot;-gray.png&quot;&#41;&#41;&#41;&#41;
+			balls&#41;&#93;&#41;
+    &#40;make-window 320 480&#41;
+    &#40;glgui-orientation-set! GUI&#95;PORTRAIT&#41;
+    &#40;set! gui &#40;make-glgui&#41;&#41;&#41;
+    ;; initialize gui here
+    &#40;for-each &#40;lambda &#40;imgs&#41; 
+		&#40;glgui-button gui
+			      150
+			      150
+			      50
+			      50
+			      imgs
+			      &#40;lambda &#40;&#41; #f&#41;&#41;&#41;
+	      ball-images&#41;&#41;
+ </code></pre></p><p>This should stack 15 buttons on top of each other, with only the last visible. That's not useful to use but I just want to make sure it works how I think it will.</p><p>Okay, let's build!</p><pre><code class="bash">$ make
+  &#91;... no errors in compilation ...&#93;
+  &#91;... executable is &#126;/,cache/lambdanative/&#91;target&#93;/bowlliards/bowlliards ...&#93;
+
+$ &#126;/.cache/lambdanative/linux/bowlliards/bowlliards
+</code></pre><p><figure> <img src="/img/bowlliards-screenshot-1.png"> </figure></p><p>I don't know about you, but I don't see anything on the screen right now.</p><p>That's okay! There's a section on the wiki about <a href='https://github.com/part-cw/lambdanative/wiki/Debugging'>Debugging</a>! Let's check it out.</p><blockquote><p> Log file location: By default LambdaNative sets the <code>current-exception-handler</code> to <a href='https://github.com/part-cw/lambdanative/blob/master/modules/ln&#95;core/log.scm'>log:exception-handler</a>. This results in all errors and additional desired logging information to be written to the applications <code>log/</code> folder. </p></blockquote><p>This is not really what I was expecting. I want to use a REPL to see if my functions are doing what I think they are doing. So let's Google "<a href='https://www.google.com/search?q=lambdanative+repl'>lambdanative repl</a>".</p><p>The <a href='https://webmail.iro.umontreal.ca/pipermail/gambit-list/2013-September/006976.html'>first result</a> indicates that getting a REPL running involves learning more about Gambit-C applications than I know:</p><blockquote><p>Hi, I started a remote repl with the demoredsquare app but the repl get too slow, somehow the app takes forever to process the repl events <pre><code class="scheme">main.scm:
+&#40;include &quot;repl.scm&quot;&#41;
+
+&#40;define gui #f&#41;
+
+&#40;start-repl-server&#41;
+</code></pre> </p></blockquote><p>We'll need to learn this stuff eventually because we won't be able to make an entire LISP application without REPL access, but for now let's try more rudimentary forms of debugging.</p><p>The first thing that occurs to me is that I assumed, rather uncharitably, that <code>glgui-button</code> was a side-effectful function that mutated the gui object it was sent - and therefore I used <code>for-each</code> to create each button. Let's try making just a single button, but calling <code>glgui-button</code> in such a way that if it <em>returns</em> a GUI object of some kind, the initialization function will be able to handle it.</p><pre><code class="scheme">   ;; initialize gui here
+    &#40;glgui-button gui
+		  150
+		  150
+		  50
+		  50
+		  &#40;png-&gt;img &quot;resources/ball8.png&quot;&#41;
+		  &#40;lambda &#40;&#41; #f&#41;&#41;&#41;
+</code></pre><pre><code class="bash">$ &#126;/.cache/lambdanative/linux/bowlliards/bowlliards
+ Segmentation fault &#40;core dumped&#41;
+</code></pre><p>Okay. Maybe the images aren't being packaged up with the executable correctly. Let's see what LambdaNative thinks should happen.</p><p>The <a href='https://github.com/part-cw/lambdanative/wiki/Applications'>Applications</a> page on the wiki says I should call this directory <code>textures/</code>. Furthermore, the <a href='https://github.com/part-cw/lambdanative/wiki/textures%28dir%29'>page on the textures directory</a> seems to imply we don't need to manually load the images—this happens during the compilation step, and the image textures can be accessed as <code>&lt;png name&gt;.img</code>.  Okay, let's rename the directory and change the file we pass to the button!</p><p><figure> <img src="/img/bowlliards-screenshot-2.png"> </figure></p><p>Looks, it's an image! We're so close to the end now I can almost taste it.</p><p>Okay, it looks like the library is not going to resize our images for us. We're just a few lines of ImageMagick away from making them smaller on our own!</p><p>Unfortunately it looks like we have to hardcode our calls to <code>glgui-button</code>, so I'm going to do that and get back to you when it looks sharp. Looks like we won't even be using out ball list.</p><p>Okay, I'm back! Our new <code>main.scm</code>:</p><pre><code class="scheme">;; An app for keeping score in a game of bowlliards
+&#40;define gui #f&#41;
+&#40;define balls
+  '&#40;&quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; &quot;5&quot;
+    &quot;6&quot; &quot;7&quot; &quot;8&quot; &quot;9&quot; &quot;10&quot; 
+    &quot;11&quot; &quot;12&quot; &quot;13&quot; &quot;14&quot; &quot;15&quot;
+    &quot;cue&quot;&#41;&#41;
+
+&#40;define &#40;ball-button x y img&#41;
+  &#40;glgui-button gui
+		x
+		y
+		64
+		64
+		img
+		&#40;lambda &#40;&#41; #t&#41;&#41;&#41;
+
+&#40;main
+;; initialization
+  &#40;lambda &#40;w h&#41;
+            ;; We map the balls list to a list of image pairs corresponding to default and grayed-out balls
+     
+    &#40;make-window 320 480&#41;
+    &#40;glgui-orientation-set! GUI&#95;PORTRAIT&#41;
+    &#40;set! gui &#40;make-glgui&#41;&#41; 
+    ;; initialize gui here
+    &#40;ball-button 128
+		 64
+		 ball1.img&#41;
+    &#40;ball-button 96
+		 128
+		 ball2.img&#41;
+    &#40;ball-button 160
+		 128
+		 ball3.img&#41;
+    &#40;ball-button 62
+		 192
+		 ball4.img&#41;
+    &#40;ball-button 126
+		 192
+		 ball5.img&#41;
+    &#40;ball-button 190
+		 192
+		 ball6.img&#41;
+    &#40;ball-button 32
+		 256
+		 ball7.img&#41;
+    &#40;ball-button 96
+		 256
+		 ball8.img&#41;
+    &#40;ball-button 160
+		 256
+		 ball9.img&#41;
+    &#40;ball-button 224
+		 256
+		 ball10.img&#41;&#41;
+
+;; events
+  &#40;lambda &#40;t x y&#41; 
+    &#40;if &#40;= t EVENT&#95;KEYPRESS&#41; &#40;begin 
+      &#40;if &#40;= x EVENT&#95;KEYESCAPE&#41; &#40;terminate&#41;&#41;&#41;&#41;
+    &#40;glgui-event gui t x y&#41;&#41;
+;; termination
+  &#40;lambda &#40;&#41; #t&#41;
+;; suspend
+  &#40;lambda &#40;&#41; &#40;glgui-suspend&#41; &#40;terminate&#41;&#41;
+;; resume
+  &#40;lambda &#40;&#41; &#40;glgui-resume&#41;&#41;
+&#41;
+
+;; eof
+
+</code></pre><p>Make it and run it, and:</p><p><img src="/img/bowlliards-screenshot-3.png"></p><p>Well, that took longer than I expected, but we made it. Right now if you click on any of the balls, you get a segfault and the program crashes. Next time we'll hook up the buttons to some real functionality!</p>
+</div>
+
+<div id="post-tags">
+    <b>Tags: </b>
+    
+    <a href="/tags-output/lets-learn-together.html">lets-learn-together</a>
+    
+    <a href="/tags-output/functional-programming.html">functional-programming</a>
+    
+    <a href="/tags-output/lambdanative.html">lambdanative</a>
+    
+    <a href="/tags-output/programming.html">programming</a>
+    
+    <a href="/tags-output/bowlliards.html">bowlliards</a>
+    
+    <a href="/tags-output/scheme.html">scheme</a>
+    
+</div>
+
+
+    <div class="prev-next">
+        
+        <a class="right" href="/posts-output/industry_protectionism.html">&laquo; Donald Trump and Bernie Sanders Agree on One Thing, and They&#39;re Both Wrong</a>
+        
+        
+    </div>
+
+    
+    <div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//cwarrendale.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    
+
+
+</div>
+
+            </div>
+        </div>
+
+        <!--<div class="col-md-5">
+            <div id="sidebar">
+                <h3>Links</h3>
+                <ul id="links">
+                    <li><a href="http://cryogenweb.org/docs/home.html">Cryogen Docs</a></li>
+                    <li><a href="http://carmenla.me/blog/index.html">Carmen's Blog</a></li>
+                    
+                </ul>
+                
+                <div id="recent">
+                    <h3>Recent Posts</h3>
+                    <ul>
+                        
+                        <li><a href="/posts-output/lets-learn-together-lambdanative-part-2.html">Let&#39;s Learn Together: LambdaNative Part 2</a></li>
+                        
+                        <li><a href="/posts-output/industry_protectionism.html">Donald Trump and Bernie Sanders Agree on One Thing, and They&#39;re Both Wrong</a></li>
+                        
+                        <li><a href="/posts-output/was_roger_right_i_spit_on_your_grave.html">Was Roger Right: I Spit On Your Grave (1978)</a></li>
+                        
+                    </ul>
+                </div>
+                
+                
+                <div id="tags">
+                    <h3>Tags</h3>
+                    <ul>
+                        
+                        <li><a href="/tags-output/whats-up-doc.html">whats-up-doc</a></li>
+                        
+                        <li><a href="/tags-output/was-roger-right.html">was-roger-right</a></li>
+                        
+                        <li><a href="/tags-output/lets-learn-together.html">lets-learn-together</a></li>
+                        
+                        <li><a href="/tags-output/roger-ebert.html">roger-ebert</a></li>
+                        
+                        <li><a href="/tags-output/bernie-sanders.html">bernie-sanders</a></li>
+                        
+                        <li><a href="/tags-output/reviews.html">reviews</a></li>
+                        
+                        <li><a href="/tags-output/economics.html">economics</a></li>
+                        
+                        <li><a href="/tags-output/functional-programming.html">functional-programming</a></li>
+                        
+                        <li><a href="/tags-output/civics.html">civics</a></li>
+                        
+                        <li><a href="/tags-output/lambdanative.html">lambdanative</a></li>
+                        
+                        <li><a href="/tags-output/programming.html">programming</a></li>
+                        
+                        <li><a href="/tags-output/donald-trump.html">donald-trump</a></li>
+                        
+                        <li><a href="/tags-output/peter-bogdanovich.html">peter-bogdanovich</a></li>
+                        
+                        <li><a href="/tags-output/movies.html">movies</a></li>
+                        
+                        <li><a href="/tags-output/politics.html">politics</a></li>
+                        
+                        <li><a href="/tags-output/bowlliards.html">bowlliards</a></li>
+                        
+                        <li><a href="/tags-output/scheme.html">scheme</a></li>
+                        
+                        <li><a href="/tags-output/i-spit-on-your-grave.html">i-spit-on-your-grave</a></li>
+                        
+                    </ul>
+                </div>
+                
+            </div>
+	</div> -->
+    </div>
+    <footer><a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> by C Warren Dale
+	    <p style="text-align: center;">Powered by <a href="http://cryogenweb.org">Cryogen</a> and <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a></p></footer>
+</div>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="/js/highlight.pack.js" type="text/javascript"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-74904529-1', 'auto');
+  ga('send', 'pageview');
+</script>
+</body>
+</html>

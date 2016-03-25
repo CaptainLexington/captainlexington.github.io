@@ -12,11 +12,155 @@ http://cwarrendale.com/
 The personal blog of an opinionated and artistically-inclined technologist
 </description>
 <lastBuildDate>
-Thu, 24 Mar 2016 10:54:55 -0500
+Fri, 25 Mar 2016 11:30:45 -0500
 </lastBuildDate>
 <generator>
 clj-rss
 </generator>
+<item>
+<guid>
+http://cwarrendale.com/posts-output/lets-learn-together-lambdanative-part-2.html
+</guid>
+<link>
+http://cwarrendale.com/posts-output/lets-learn-together-lambdanative-part-2.html
+</link>
+<title>
+Let's Learn Together: LambdaNative Part 2
+</title>
+<description>
+&lt;p&gt;Welcome back to the Let's Learn Together! Last time we installed LambdaNative from source and generated an empty template GUI application. Today we are going to examine their GUI library. But before we get to that, let's examine what kind of basic interface it is we want.&lt;/p&gt;&lt;p&gt;We are going to steal our UI from extant Android application &lt;a href='https://play.google.com/store/apps/details?id=jp.dcom.android.bowlard'&gt;Touch de Score Bowlard&lt;/a&gt;—specifically, the paradigm of touching each specific ball as it is sunk. However, play around with the app a bit and you'll see it has several UI issues:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;It's impossible to undo any mistakes in input - if you accidentally hit the &quot;G&quot; button (which means &quot;gutterball&quot;), you've scrapped that whole frame and can't change your score.&lt;/li&gt;&lt;li&gt;There's a separate button for &quot;Spare&quot; and &quot;Strike&quot; - the UI should just detect spares and strikes because it should know what turn you're on.&lt;/li&gt;&lt;li&gt;You can only keep your own score - you can't keep score for an entire game of multiple players.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;So, we're going to go our own way on these issues. Here's what we want out of our app:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;A diagram of the balls in play. You click on a ball to indicate you've sunk it, and your score is incremented. The ball gets grayed out to demonstrate that it is out of play, and if you tap it again it comes back into play - for instance, if you've made a mistake. There is additionally a button to advance to the next frame.&lt;/li&gt;&lt;li&gt;A picture of a scorecard at the top of the screen indicates the current player, their running total score, and their current frame.&lt;/li&gt;&lt;li&gt;There are arrow buttons near the scorecard that allow you to cycle back to earlier frames to alter those scores.&lt;/li&gt;&lt;li&gt;It is possible to go to a separate screen to view the entire scorecard for the every player so far, like a traditional bowling alley scorecard.&lt;/li&gt;&lt;li&gt;There is a label of text beneath the scorecard that instructs the player on their next move, according to the mildly complicated rules of the game.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;I think that's everything we need to worry about for now. For this first example, we'll want our ten &quot;ball&quot; buttons on the screen.&lt;/p&gt;&lt;p&gt;Well, let's get started!&lt;/p&gt;&lt;h2&gt;&lt;a name=&quot;let's&amp;#95;learn&amp;#95;together:&amp;#95;lambdanative's&amp;#95;gui&amp;#95;system&quot;&gt;&lt;/a&gt;Let's Learn Together: LambdaNative's GUI system&lt;/h2&gt;&lt;p&gt;All LambdaNative GUI applications need to make use of the module &lt;a href='https://github.com/part-cw/lambdanative/wiki/Index-of-Module-ln&amp;#95;glgui'&gt;ln&amp;#95;glgui&lt;/a&gt;, documented in the wiki.&lt;/p&gt;&lt;p&gt;It looks like we want a &lt;a href='https://github.com/part-cw/lambdanative/wiki/glgui-button'&gt;&lt;code&gt;glgui-button&lt;/code&gt;&lt;/a&gt;. It puts an image texture at an x,y location on the screen and attaches a callback. First, we'll need image textures! I made up a simple suite of pool ball graphics, to be released under &lt;a href='http://creativecommons.org/licenses/by-sa/4.0/'&gt;CC-by-sa 4.0&lt;/a&gt;, like the text of this blog.&lt;/p&gt;&lt;p&gt;&lt;figure&gt; &lt;label for=&quot;pool-balls&quot; class=&quot;margin-toggle&quot;&gt;&lt;/label&gt; &lt;input type=&quot;checkbox&quot; id=&quot;pool-balls&quot; class=&quot;margin-toggle&quot;&gt; &lt;span class=&quot;marginnote&quot;&gt;The SVG-based pool ball graphics we will use. CC-by-sa 2016 C Warren Dale&lt;/span&gt; &lt;img src=&quot;/img/balls.png&quot;&gt; &lt;/figure&gt;&lt;/p&gt;&lt;p&gt;I've made a complete pool set so people can use it for their own purposes, even though we'll only use balls one-through ten. I've also chopped them into separate files called &lt;code&gt;ballK.png&lt;/code&gt; and &lt;code&gt;ballK-gray.png&lt;/code&gt;, for 1 ≤ K ≤ 15. &lt;/p&gt;&lt;p&gt;So, the first thing we want to do is load all our images. LambaNative has a wrapper around libpng, &lt;a href='https://github.com/part-cw/lambdanative/wiki/Index-of-Module-png'&gt;png&lt;/a&gt;, which looks promising; specifically the &lt;code&gt;png-&amp;gt;img&lt;/code&gt; function, which loads png images by filename and returns an image texture like our &lt;code&gt;glgui-button&lt;/code&gt; is expecting.&lt;/p&gt;&lt;p&gt;So we'll want to take a list of the numbers one through ten, map it to a list of image textures, and and pass those to a function that creates buttons, along with a list of x,y coords. So the first thing we need is range.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;scheme&quot;&gt;1&amp;gt; range
+&amp;#42;&amp;#42;&amp;#42; ERROR IN &amp;#40;console&amp;#41;@9.1 -- Unbound variable: range
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Huh. Well, Google indicates Scheme thinks it makes sense to call the function we all know as range &lt;code&gt;iota&lt;/code&gt;. Okay. &lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;scheme&quot;&gt;2&amp;gt; iota
+&amp;#42;&amp;#42;&amp;#42; ERROR IN &amp;#40;console&amp;#41;@10.1 -- Unbound variable: iota
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Okay. So Gambit-C doesn't have an implementation of iota. We're going to do a terrible thing and hardcode the identifiers for the balls, justifying this by loading in the cue ball as well! &lt;/p&gt;&lt;p&gt;At the top of &lt;code&gt;main.scm&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;scheme&quot;&gt; ;; An app for keeping score in a game of bowlliards
+ &amp;#40;define gui #f&amp;#41;
+ &amp;#40;define balls
+   '&amp;#40;&amp;quot;1&amp;quot; &amp;quot;2&amp;quot; &amp;quot;3&amp;quot; &amp;quot;4&amp;quot; &amp;quot;5&amp;quot;
+     &amp;quot;6&amp;quot; &amp;quot;7&amp;quot; &amp;quot;8&amp;quot; &amp;quot;9&amp;quot; &amp;quot;10&amp;quot; 
+     &amp;quot;cue&amp;quot;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;And in the &lt;code&gt;initialization&lt;/code&gt; function:&lt;pre&gt;&lt;code class=&quot;scheme&quot;&gt;;; initialization
+  &amp;#40;lambda &amp;#40;w h&amp;#41;
+            ;; We map the balls list to a list of image pairs corresponding to default and grayed-out balls
+    &amp;#40;let &amp;#40;&amp;#91;ball-images &amp;#40;map
+			&amp;#40;lambda &amp;#40;ball&amp;#41;
+			  `&amp;#40;&amp;#40;png-&amp;gt;img &amp;#40;string-append &amp;quot;resources/ball&amp;quot; ball &amp;quot;.png&amp;quot;&amp;#41;&amp;#41;
+			    &amp;#40;png-&amp;gt;img &amp;#40;string-append &amp;quot;resources/ball&amp;quot; ball &amp;quot;-gray.png&amp;quot;&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+			balls&amp;#41;&amp;#93;&amp;#41;
+    &amp;#40;make-window 320 480&amp;#41;
+    &amp;#40;glgui-orientation-set! GUI&amp;#95;PORTRAIT&amp;#41;
+    &amp;#40;set! gui &amp;#40;make-glgui&amp;#41;&amp;#41;&amp;#41;
+    ;; initialize gui here
+    &amp;#40;for-each &amp;#40;lambda &amp;#40;imgs&amp;#41; 
+		&amp;#40;glgui-button gui
+			      150
+			      150
+			      50
+			      50
+			      imgs
+			      &amp;#40;lambda &amp;#40;&amp;#41; #f&amp;#41;&amp;#41;&amp;#41;
+	      ball-images&amp;#41;&amp;#41;
+ &lt;/code&gt;&lt;/pre&gt;&lt;/p&gt;&lt;p&gt;This should stack 15 buttons on top of each other, with only the last visible. That's not useful to use but I just want to make sure it works how I think it will.&lt;/p&gt;&lt;p&gt;Okay, let's build!&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ make
+  &amp;#91;... no errors in compilation ...&amp;#93;
+  &amp;#91;... executable is &amp;#126;/,cache/lambdanative/&amp;#91;target&amp;#93;/bowlliards/bowlliards ...&amp;#93;
+
+$ &amp;#126;/.cache/lambdanative/linux/bowlliards/bowlliards
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;figure&gt; &lt;img src=&quot;/img/bowlliards-screenshot-1.png&quot;&gt; &lt;/figure&gt;&lt;/p&gt;&lt;p&gt;I don't know about you, but I don't see anything on the screen right now.&lt;/p&gt;&lt;p&gt;That's okay! There's a section on the wiki about &lt;a href='https://github.com/part-cw/lambdanative/wiki/Debugging'&gt;Debugging&lt;/a&gt;! Let's check it out.&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt; Log file location: By default LambdaNative sets the &lt;code&gt;current-exception-handler&lt;/code&gt; to &lt;a href='https://github.com/part-cw/lambdanative/blob/master/modules/ln&amp;#95;core/log.scm'&gt;log:exception-handler&lt;/a&gt;. This results in all errors and additional desired logging information to be written to the applications &lt;code&gt;log/&lt;/code&gt; folder. &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;This is not really what I was expecting. I want to use a REPL to see if my functions are doing what I think they are doing. So let's Google &quot;&lt;a href='https://www.google.com/search?q=lambdanative+repl'&gt;lambdanative repl&lt;/a&gt;&quot;.&lt;/p&gt;&lt;p&gt;The &lt;a href='https://webmail.iro.umontreal.ca/pipermail/gambit-list/2013-September/006976.html'&gt;first result&lt;/a&gt; indicates that getting a REPL running involves learning more about Gambit-C applications than I know:&lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;Hi, I started a remote repl with the demoredsquare app but the repl get too slow, somehow the app takes forever to process the repl events &lt;pre&gt;&lt;code class=&quot;scheme&quot;&gt;main.scm:
+&amp;#40;include &amp;quot;repl.scm&amp;quot;&amp;#41;
+
+&amp;#40;define gui #f&amp;#41;
+
+&amp;#40;start-repl-server&amp;#41;
+&lt;/code&gt;&lt;/pre&gt; &lt;/p&gt;&lt;/blockquote&gt;&lt;p&gt;We'll need to learn this stuff eventually because we won't be able to make an entire LISP application without REPL access, but for now let's try more rudimentary forms of debugging.&lt;/p&gt;&lt;p&gt;The first thing that occurs to me is that I assumed, rather uncharitably, that &lt;code&gt;glgui-button&lt;/code&gt; was a side-effectful function that mutated the gui object it was sent - and therefore I used &lt;code&gt;for-each&lt;/code&gt; to create each button. Let's try making just a single button, but calling &lt;code&gt;glgui-button&lt;/code&gt; in such a way that if it &lt;em&gt;returns&lt;/em&gt; a GUI object of some kind, the initialization function will be able to handle it.&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;scheme&quot;&gt;   ;; initialize gui here
+    &amp;#40;glgui-button gui
+		  150
+		  150
+		  50
+		  50
+		  &amp;#40;png-&amp;gt;img &amp;quot;resources/ball8.png&amp;quot;&amp;#41;
+		  &amp;#40;lambda &amp;#40;&amp;#41; #f&amp;#41;&amp;#41;&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;pre&gt;&lt;code class=&quot;bash&quot;&gt;$ &amp;#126;/.cache/lambdanative/linux/bowlliards/bowlliards
+ Segmentation fault &amp;#40;core dumped&amp;#41;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Okay. Maybe the images aren't being packaged up with the executable correctly. Let's see what LambdaNative thinks should happen.&lt;/p&gt;&lt;p&gt;The &lt;a href='https://github.com/part-cw/lambdanative/wiki/Applications'&gt;Applications&lt;/a&gt; page on the wiki says I should call this directory &lt;code&gt;textures/&lt;/code&gt;. Furthermore, the &lt;a href='https://github.com/part-cw/lambdanative/wiki/textures%28dir%29'&gt;page on the textures directory&lt;/a&gt; seems to imply we don't need to manually load the images—this happens during the compilation step, and the image textures can be accessed as &lt;code&gt;&amp;lt;png name&amp;gt;.img&lt;/code&gt;.  Okay, let's rename the directory and change the file we pass to the button!&lt;/p&gt;&lt;p&gt;&lt;figure&gt; &lt;img src=&quot;/img/bowlliards-screenshot-2.png&quot;&gt; &lt;/figure&gt;&lt;/p&gt;&lt;p&gt;Looks, it's an image! We're so close to the end now I can almost taste it.&lt;/p&gt;&lt;p&gt;Okay, it looks like the library is not going to resize our images for us. We're just a few lines of ImageMagick away from making them smaller on our own!&lt;/p&gt;&lt;p&gt;Unfortunately it looks like we have to hardcode our calls to &lt;code&gt;glgui-button&lt;/code&gt;, so I'm going to do that and get back to you when it looks sharp. Looks like we won't even be using out ball list.&lt;/p&gt;&lt;p&gt;Okay, I'm back! Our new &lt;code&gt;main.scm&lt;/code&gt;:&lt;/p&gt;&lt;pre&gt;&lt;code class=&quot;scheme&quot;&gt;;; An app for keeping score in a game of bowlliards
+&amp;#40;define gui #f&amp;#41;
+&amp;#40;define balls
+  '&amp;#40;&amp;quot;1&amp;quot; &amp;quot;2&amp;quot; &amp;quot;3&amp;quot; &amp;quot;4&amp;quot; &amp;quot;5&amp;quot;
+    &amp;quot;6&amp;quot; &amp;quot;7&amp;quot; &amp;quot;8&amp;quot; &amp;quot;9&amp;quot; &amp;quot;10&amp;quot; 
+    &amp;quot;11&amp;quot; &amp;quot;12&amp;quot; &amp;quot;13&amp;quot; &amp;quot;14&amp;quot; &amp;quot;15&amp;quot;
+    &amp;quot;cue&amp;quot;&amp;#41;&amp;#41;
+
+&amp;#40;define &amp;#40;ball-button x y img&amp;#41;
+  &amp;#40;glgui-button gui
+		x
+		y
+		64
+		64
+		img
+		&amp;#40;lambda &amp;#40;&amp;#41; #t&amp;#41;&amp;#41;&amp;#41;
+
+&amp;#40;main
+;; initialization
+  &amp;#40;lambda &amp;#40;w h&amp;#41;
+            ;; We map the balls list to a list of image pairs corresponding to default and grayed-out balls
+     
+    &amp;#40;make-window 320 480&amp;#41;
+    &amp;#40;glgui-orientation-set! GUI&amp;#95;PORTRAIT&amp;#41;
+    &amp;#40;set! gui &amp;#40;make-glgui&amp;#41;&amp;#41; 
+    ;; initialize gui here
+    &amp;#40;ball-button 128
+		 64
+		 ball1.img&amp;#41;
+    &amp;#40;ball-button 96
+		 128
+		 ball2.img&amp;#41;
+    &amp;#40;ball-button 160
+		 128
+		 ball3.img&amp;#41;
+    &amp;#40;ball-button 62
+		 192
+		 ball4.img&amp;#41;
+    &amp;#40;ball-button 126
+		 192
+		 ball5.img&amp;#41;
+    &amp;#40;ball-button 190
+		 192
+		 ball6.img&amp;#41;
+    &amp;#40;ball-button 32
+		 256
+		 ball7.img&amp;#41;
+    &amp;#40;ball-button 96
+		 256
+		 ball8.img&amp;#41;
+    &amp;#40;ball-button 160
+		 256
+		 ball9.img&amp;#41;
+    &amp;#40;ball-button 224
+		 256
+		 ball10.img&amp;#41;&amp;#41;
+
+;; events
+  &amp;#40;lambda &amp;#40;t x y&amp;#41; 
+    &amp;#40;if &amp;#40;= t EVENT&amp;#95;KEYPRESS&amp;#41; &amp;#40;begin 
+      &amp;#40;if &amp;#40;= x EVENT&amp;#95;KEYESCAPE&amp;#41; &amp;#40;terminate&amp;#41;&amp;#41;&amp;#41;&amp;#41;
+    &amp;#40;glgui-event gui t x y&amp;#41;&amp;#41;
+;; termination
+  &amp;#40;lambda &amp;#40;&amp;#41; #t&amp;#41;
+;; suspend
+  &amp;#40;lambda &amp;#40;&amp;#41; &amp;#40;glgui-suspend&amp;#41; &amp;#40;terminate&amp;#41;&amp;#41;
+;; resume
+  &amp;#40;lambda &amp;#40;&amp;#41; &amp;#40;glgui-resume&amp;#41;&amp;#41;
+&amp;#41;
+
+;; eof
+
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Make it and run it, and:&lt;/p&gt;&lt;p&gt;&lt;img src=&quot;/img/bowlliards-screenshot-3.png&quot;&gt;&lt;/p&gt;&lt;p&gt;Well, that took longer than I expected, but we made it. Right now if you click on any of the balls, you get a segfault and the program crashes. Next time we'll hook up the buttons to some real functionality!&lt;/p&gt;
+</description>
+<enclosure>
+
+</enclosure>
+<pubDate>
+Fri, 25 Mar 2016 00:00:00 -0500
+</pubDate>
+</item>
 <item>
 <guid>
 http://cwarrendale.com/posts-output/industry_protectionism.html
